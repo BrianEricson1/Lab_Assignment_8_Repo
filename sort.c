@@ -33,36 +33,37 @@ void heapSort(int arr[], int n)
 // implement merge sort
 // extraMemoryAllocated counts bytes of extra memory allocated
 void merge(int arr[], int low, int mid, int high){
-	int len = mid-low;
-	int * tarr1 = (int*)malloc(sizeof(int)*len);
-	int * tarr2 = (int*)malloc(sizeof(int)*len);
-	extraMemoryAllocated += sizeof(int)*len*2;
-	for(int w = 0; w < len; w++){
+	int len1 = mid-low;
+	int len2 = high-mid+1;
+	int * tarr1 = (int*)malloc(sizeof(int)*len1);
+	int * tarr2 = (int*)malloc(sizeof(int)*len2);
+	extraMemoryAllocated += sizeof(int)*(len1+len2);
+	for(int w = 0; w < len1; w++)
 		tarr1[w] = arr[low+w];
+	for(int w = 0; w < len2; w++)
 		tarr2[w] = arr[mid+w];
-	}
 	int i = 0;
-	int j = 0;
-  int k = 0;
-	while(j < len && k < len){
-		if(tarr1[j] > tarr2[k]){
-			arr[low+i] = tarr2[k];
-			k++;
+	int t1 = 0;
+  int t2 = 0;
+	while(t1 < len1 && t2 < len2){
+		if(tarr1[t1] > tarr2[t2]){
+			arr[low+i] = tarr2[t2];
+			t2++;
 		}
 		else{
-			arr[low+i] = tarr1[j];
-			j++;
+			arr[low+i] = tarr1[t1];
+			t1++;
 		}
 		i++;
 	}
-	while(j < len){
-		arr[low+i] = tarr1[j];
-		j++;
+	while(t1 < len1){
+		arr[low+i] = tarr1[t1];
+		t1++;
 		i++;
 	}
-	while(k < len){
-		arr[low+i] = tarr2[k];
-		k++;
+	while(t2 < len2){
+		arr[low+i] = tarr2[t2];
+		t2++;
 		i++;
 	}
 	free(tarr1);
@@ -156,7 +157,7 @@ int main(void)
 		heapSort(pDataCopy, dataSz);
 		end = clock();
 		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
-		printf("\truntime\t\t\t: %.1lf\n",cpu_time_used);
+		printf("\truntime\t\t\t: %.3lf\n",cpu_time_used);
 		printf("\textra memory allocated\t: %d\n",extraMemoryAllocated);
 		printArray(pDataCopy, dataSz);
 		
